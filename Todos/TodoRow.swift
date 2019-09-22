@@ -1,23 +1,32 @@
 import SwiftUI
 
-struct TodoRow: View {
+struct Deadline: View {
+    var date: Date
 
-    var todo: Todo
-
-    func toggleTodo() {
-        print("toggled")
-    }
+    static let taskDateFormat: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter
+    }()
 
     var body: some View {
         HStack {
-            Button(action: { self.toggleTodo() }, label: {
-                if todo.done {
-                    Text("DONE").foregroundColor(.green)
-                } else {
-                    Text("TODO").foregroundColor(.red)
-                }
-            })
+            Text("deadline").foregroundColor(.gray).fontWeight(.light)
+            Spacer()
+            Text(" \(date, formatter: Self.taskDateFormat)").foregroundColor(.orange)
+        }
+    }
+}
+
+struct TodoRow: View {
+    var todo: Todo
+
+    var body: some View {
+        VStack(alignment: .leading) {
             Text(todo.text)
+            todo.deadline.map {
+                Deadline(date: $0)
+            }
         }
 
     }
