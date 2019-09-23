@@ -10,25 +10,60 @@ import SwiftUI
 
 struct TodoEditor: View {
 
-    @Binding var todo: Todo
+    @Environment(\.presentationMode) private var presentationMode
+
+    var todo: Todo
+
+    @State private var withDeadline = false
+    @State private var text = ""
+    @State private var deadline = Date()
+
+    var saved: (Todo) -> Void = { _ in }
+
+    func dismiss() {
+        presentationMode.wrappedValue.dismiss()
+    }
+
+    func refresh() {
+        text = todo.text
+        withDeadline = todo.deadline != nil
+        if let d = todo.deadline { deadline = d }
+    }
 
     var body: some View {
-        List {
-            HStack {
-                Text("text").bold()
-                Divider()
-                TextField("text", text: $todo.text)
+        Form {
+            TextField("Enter description", text: $text)
+            Toggle(isOn: $withDeadline) {
+                Text("With Deadline")
             }
-            VStack {
-                Text("Deadline").bold()
-//                DatePicker("Deadline", selection: $todo.deadline)
+            if withDeadline {
+                DatePicker(selection: $deadline, displayedComponents: .date) {
+                    Text("DEADLINE")
+                }
+            }
+            Button( action: {
+                var newTodo = self.todo
+                newTodo.text = self.text
+                if self.withDeadline {
+                    newTodo.deadline = self.deadline
+                }
+                self.saved(newTodo)
+                self.dismiss()
+            }) {
+                Text("Save")
             }
         }
+        .navigationBarTitle("Edit Task")
+        .navigationBarItems(trailing:
+            Button(action: dismiss) {
+                Text("Cancel")
+            }
+        ).onAppear(perform: refresh)
     }
 }
 
-struct TodoEditor_Previews: PreviewProvider {
-    static var previews: some View {
-        TodoEditor(todo: .constant(.default))
-    }
-}
+//struct TodoEditor_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TodoEditor(todo: .constant(.default))
+//    }
+//}
