@@ -1,16 +1,8 @@
-//
-//  TodoListView.swift
-//  Todos
-//
-//  Created by xhu on 17/09/19.
-//  Copyright © 2019 huxiaoxing. All rights reserved.
-//
-
 import SwiftUI
 
 struct TodoList: View {
 
-    @EnvironmentObject var store: Store
+    @EnvironmentObject var userData: UserData
     @State private var showTodoEditor = false
     @State private var showDones = false
 
@@ -18,7 +10,6 @@ struct TodoList: View {
 
     func addTask() {
         self.showTodoEditor = true
-//        store.todos.append(Todo("buy milk"))
     }
 
     var addButton: some View {
@@ -37,10 +28,10 @@ struct TodoList: View {
                 Toggle(isOn: $showDones) {
                     Text("Show Completed Tasks").bold()
                 }
-                ForEach(store.todos) { todo in
+                ForEach(userData.todos) { todo in
                     if self.showDones || !todo.done {
                         HStack {
-                            Button(action: { self.store.toggle(todo) }) {
+                            Button(action: { self.userData.toggle(todo) }) {
                                 if todo.done {
                                     Image(systemName: "checkmark.circle").foregroundColor(.green)
                                 } else {
@@ -69,7 +60,7 @@ struct TodoList: View {
             print(self.showTodoEditor)
         }) {
             TodoEditor(todo: Todo.default, saved: { todo in
-                self.store.todos.append(todo)
+                self.userData.todos.append(todo)
             })
         }
     }

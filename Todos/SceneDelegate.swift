@@ -22,7 +22,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
 //        let contentView = ContentView()
 
-        let todoList = TodoList().environmentObject(Store.load())
+        var dataSource: DataSource = DataFromJSON()
+        let m = ProcessInfo.processInfo.environment["mock"]
+        if let mock = m.flatMap({ MockData(rawValue: $0) }) {
+            dataSource = mock
+        }
+
+        let todoList = TodoList().environmentObject(UserData(dataSource))
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
