@@ -28,6 +28,7 @@ struct TodoList: View {
                 Toggle(isOn: $showDones) {
                     Text("Show Completed Tasks").bold()
                 }
+                .accessibility(identifier: "showCompletedToggle")
                 ForEach(userData.todos) { todo in
                     if self.showDones || !todo.done {
                         HStack {
@@ -37,7 +38,7 @@ struct TodoList: View {
                                 } else {
                                     Image(systemName: "circle").foregroundColor(.red)
                                 }
-                            }
+                            }.accessibility(identifier: "toggleButton")
 
                             TodoRow(todo: todo).onTapGesture {
                                 print("text tapped")

@@ -1,11 +1,3 @@
-//
-//  ScreenplayUITests.swift
-//  ScreenplayUITests
-//
-//  Created by Xiaoxing Hu on 25/09/19.
-//  Copyright © 2019 huxiaoxing. All rights reserved.
-//
-
 import XCTest
 
 class ScreenplayUITests: XCTestCase {
@@ -16,9 +8,12 @@ class ScreenplayUITests: XCTestCase {
 
     func testWithScreenplay() {
         var user = User()
-        user.does(HasTodos(.basic))
-        user.perform(LaunchApp())
-        user.should(SeeTodos("buy milk"))
+        user.does(HaveTodos.basic)
+        user.perform(LaunchApp()
+            + ToggleTodo(text: "buy milk")
+            + ToggleShowCompleted())
+        user.should(SeeTodos("buy milk", "buy chocolate"))
+
     }
 
 }

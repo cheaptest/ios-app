@@ -1,21 +1,20 @@
 import Foundation
 import XCTest
 
-struct SeeTodos: Validation {
+struct SeeTodos: Verifiable {
 
     let todos: [String]
     init(_ todos: String...) {
         self.todos = todos
     }
 
-    func perform(_ state: AppState) -> AppState {
+    func perform(_ state: inout AppState) {
 
         for todo in todos {
             print("checking: \(todo)")
-            XCTAssertTrue(TodoListElements.todo(todo)(state).exists) 
+            XCTAssertTrue(TodoListElements.todo(todo)(state).exists)
         }
 
-        return state
     }
 
     typealias StateType = AppState

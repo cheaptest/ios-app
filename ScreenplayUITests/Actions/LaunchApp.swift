@@ -1,11 +1,13 @@
 import Foundation
 
-struct LaunchApp: Action {
-    func perform(_ state: AppState) -> AppState {
+struct LaunchApp: Actionable {
+    func perform(_ state: inout AppState) {
         state.app.launch()
-        return state
     }
+}
 
-    typealias StateType = AppState
-
+extension Actionable where StateType == AppState {
+    static var launchApp: Self {
+        return LaunchApp() as! Self
+    }
 }
