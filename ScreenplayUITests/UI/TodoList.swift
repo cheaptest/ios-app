@@ -6,4 +6,8 @@ struct TodoListElements {
     }
 
     static var showCompletedToggle: ElementLocator = { $0.app.tables.switches["showCompletedToggle"] }
+
+    static var addNewTaskButton: ElementLocator = {
+        $0.app.tables.buttons["Add New Task"]
+    }
 }

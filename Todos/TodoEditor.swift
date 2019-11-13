@@ -32,10 +32,20 @@ struct TodoEditor: View {
 
     var body: some View {
         Form {
-            TextField("Enter description", text: $text)
+            HStack {
+                TextField("Enter description", text: $text)
+                    .accessibility(identifier: "title")
+                if !text.isEmpty {
+                    Button(action: { self.text = "" }) {
+                        Image(systemName: "multiply.circle")
+                    }.accessibility(identifier: "clearTitle")
+                }
+            }
+
+
             Toggle(isOn: $withDeadline) {
                 Text("With Deadline")
-            }
+            }.accessibility(identifier: "withDeadlineToggle")
             if withDeadline {
                 DatePicker(selection: $deadline, displayedComponents: .date) {
                     Text("DEADLINE")
@@ -62,8 +72,8 @@ struct TodoEditor: View {
     }
 }
 
-//struct TodoEditor_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TodoEditor(todo: .constant(.default))
-//    }
-//}
+struct TodoEditor_Previews: PreviewProvider {
+    static var previews: some View {
+        TodoEditor(todo: Todo.default)
+    }
+}

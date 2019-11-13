@@ -11,8 +11,7 @@ struct SeeTodos: Verifiable {
     func perform(_ state: inout AppState) {
 
         for todo in todos {
-            print("checking: \(todo)")
-            XCTAssertTrue(TodoListElements.todo(todo)(state).exists)
+            XCTAssertTrue(TodoListElements.todo(todo)(state).exists, "Can't seem to find \(todo)")
         }
 
     }
