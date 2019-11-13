@@ -19,7 +19,7 @@ class ScreenplayUITests: XCTestCase {
         var user = User()
         user.does(HaveTodos.basic)
         user.perform(LaunchApp()
-            + AddTodo(text: "Buy Coffee"))
+            + AddTodo(text: "Buy Coffee", deadline: ("January", "15", "2025")))
         user.should(SeeTodos("buy milk", "Buy Coffee"))
     }
 
